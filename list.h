@@ -41,11 +41,7 @@ class List{
             this->size = 1;
         }
         int get_iterator(){//Return the value at the iterator
-            if(it == nullptr){
-                return ']';
-            }
-            else
-                return it->val;
+            return it->val;
         }
         bool isEmpty(){//Checks whether the list is empty and returns a boolean
             if(front == nullptr){
@@ -82,17 +78,20 @@ class List{
             front->prev = nullptr;
             delete temp;
         }
-        void insert_after(int x){
-            //Creates new node and temp pointer to help us insert it
+        void insert_after(int x){//Creates new node and temp pointer to help us insert it
             if(it->next != nullptr){
                 Node* temp = new Node(x);
                 temp->next = it->next;
+                temp->prev = it;
                 it->next = temp;
+                it = temp->next;
+                it->prev = temp;
                 it = temp;
             }
             else{
                 Node* temp = new Node(x);
                 it->next = temp;
+                temp->prev = it;
                 it = temp;
             }
             size++;
@@ -103,7 +102,7 @@ class List{
                 if(x > it->val){
                     it = it->next;
                 }
-                else if(x < it->val){
+                else if(x <= it->val){
                     Node* temp = new Node(x);
                     temp->prev = it->prev;
                     temp->next = it;
@@ -111,14 +110,17 @@ class List{
                     it = temp->prev;
                     it->next = temp;
                     it = temp;
+                    size++;
+                    break;
                 }
+                break;
             }
         }
         void clear(){//Clears the list
             front = nullptr;
             it = nullptr;
             back = nullptr;
-            //All pointers don't point at anything, losing all of the nodes and clearing the list
+            //All pointers point at nothing, losing all of the nodes and clearing the list
         }
         void move_up(){//Moves the iterator up in the list
             if(it->next != nullptr){
@@ -129,5 +131,16 @@ class List{
             if(it->prev != nullptr){
                 it = it->prev;
             }
+        }
+        int print_all(){
+            it = front;
+            if(it->next != nullptr){
+                std::cout << it->val;
+            }
+            else{
+                std::cout << it->val;
+                it = it->next;
+            }
+            return 0;
         }
 };
